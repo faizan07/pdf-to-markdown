@@ -1,0 +1,18 @@
+# Environment / secrets — never commit these
+.env
+
+# uv / Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Output files (optional — remove if you want to track generated .md files)
+*.md
+!README.md
+
+# Input files
+*.pdf

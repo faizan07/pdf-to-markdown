@@ -1,6 +1,11 @@
-# PDF to Markdown Converter
+# PDF ↔ Markdown Converter
 
-Converts a text-based PDF (resume, report, article) into a clean, well-formatted Markdown file using Claude AI.
+Two-way converter between PDF and Markdown using Claude AI.
+
+| Script | Direction |
+|---|---|
+| `pdf_to_md.py` | PDF → Markdown (uses Claude AI) |
+| `md_to_pdf.py` | Markdown → PDF (fully local, no API needed) |
 
 ## Setup
 
@@ -9,39 +14,46 @@ Converts a text-based PDF (resume, report, article) into a clean, well-formatted
 uv sync
 ```
 
-**2. Add your API key**
+> **Windows note for WeasyPrint:** WeasyPrint needs GTK libraries on Windows.
+> Download and run the GTK3 installer from https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases
+> then restart your terminal before running `uv sync`.
+
+**2. Add your API key** *(only needed for `pdf_to_md.py`)*
 ```powershell
-# Copy the example env file
 copy .env.example .env
+# Open .env and replace the placeholder with your real key from https://console.anthropic.com/
 ```
-Then open `.env` and replace `sk-ant-your-key-here` with your actual key from [console.anthropic.com](https://console.anthropic.com/).
 
 ## Usage
 
+### PDF → Markdown
 ```powershell
-# Output auto-named: resume.pdf → resume.md
-uv run pdf_to_md.py resume.pdf
+uv run pdf_to_md.py resume.pdf              # → resume.md
+uv run pdf_to_md.py resume.pdf output.md    # custom output name
+uv run pdf_to_md.py resume.pdf --raw        # also save raw extracted text
+```
 
-# Specify output file
-uv run pdf_to_md.py resume.pdf my_resume.md
-
-# Also save raw extracted text (useful for debugging)
-uv run pdf_to_md.py resume.pdf --raw
+### Markdown → PDF
+```powershell
+uv run md_to_pdf.py resume.md               # → resume.pdf
+uv run md_to_pdf.py resume.md output.pdf    # custom output name
+uv run md_to_pdf.py resume.md --html        # also save intermediate HTML
 ```
 
 ## Project Structure
 
 ```
 pdf_to_md/
-├── pdf_to_md.py       # Main script
-├── pyproject.toml     # Dependencies & project metadata
+├── pdf_to_md.py       # PDF → Markdown (Claude AI)
+├── md_to_pdf.py       # Markdown → PDF (local, no API)
+├── pyproject.toml     # All dependencies
 ├── .env               # Your API key (never commit this)
-├── .env.example       # Template — commit this instead
+├── .env.example       # Template to commit
 └── .gitignore
 ```
 
 ## Notes
 
-- Works with **text-based PDFs** only (not scanned/image PDFs).
-- Font size metadata from the PDF is used to infer heading levels (H1/H2/H3).
-- Large documents are automatically chunked to stay within API limits.
+- `pdf_to_md.py` works with **text-based PDFs** only (not scanned/image PDFs).
+- `md_to_pdf.py` is fully offline — no API key required.
+- Tables, code blocks, headings, bold/italic, and blockquotes are all styled in the PDF output.

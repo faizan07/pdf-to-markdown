@@ -1,13 +1,18 @@
 [project]
 name = "pdf-to-md"
 version = "1.0.0"
-description = "Convert text-based PDFs (e.g. resumes) to well-formatted Markdown using Claude AI"
+description = "Convert text-based PDFs to Markdown and Markdown to PDF using Claude AI"
 requires-python = ">=3.11"
 dependencies = [
+    # pdf → markdown
     "pdfplumber>=0.11",
     "anthropic>=0.40",
     "pypdf>=5.0",
     "python-dotenv>=1.0",
+    # markdown → pdf (pure Python, no system libraries needed)
+    "markdown-it-py>=3.0",
+    "mdit-py-plugins>=0.4",
+    "xhtml2pdf>=0.2.16",
 ]
 
 [tool.uv]
